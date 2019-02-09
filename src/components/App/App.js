@@ -10,16 +10,35 @@ class App extends Component {
       todoElements: [],
     }
   }
+  saveToLocalStorage(state) {
+    localStorage.setItem('todo', JSON.stringify(state));
+  }
+  loadFromLocalStorage() {
+    let todoObject = localStorage.getItem('todo');
+    return JSON.parse(todoObject);
+  }
   handleInput(value) {
     this.setState({
-      todoElements: this.state.todoElements.concat(value),
+      todoElements: this.state.todoElements.concat({taskText: value, ts: Date.now()}),
+    }, () => {
+      this.saveToLocalStorage(this.state);
     });
+  }
+  handleDelete(ts) {
+    this.setState({
+      todoElements: this.state.todoElements.filter((el) => el.ts !== ts),
+    }, () => {
+      this.saveToLocalStorage(this.state);
+    });
+  }
+  componentWillMount() {
+    this.setState(this.loadFromLocalStorage());
   }
   render() {
     return (
       <>
       <TodoInput handleInput={(value) => this.handleInput(value)}/>
-      <TodoList todoElements={this.state.todoElements}/>
+      <TodoList todoElements={this.state.todoElements} handleDelete={(ts) => this.handleDelete(ts)}/>
       </>
     );
   }
