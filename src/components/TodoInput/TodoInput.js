@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+import './TodoInput.css';
+
+
+export default TodoInput;
+
+export default TodoInput;
 
 class TodoInput extends Component {
   handleInput(e) {
@@ -11,7 +17,7 @@ class TodoInput extends Component {
 
   render() {
     return (
-      <div className="TodoInput">
+      <div>
         <input ref={(el) => this._input = el} onKeyUp={(e) => this.handleInput(e)} type="text" />
         <button onClick={(e) => this.handleInput(e)} >Add</button>
       </div>
